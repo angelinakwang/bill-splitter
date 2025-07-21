@@ -3,30 +3,45 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical">
+
     <TextView
         android:id="@+id/text_view"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/name" />
+
     <TextView
         android:id="@+id/text"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Wagyu" />
+
     <TextView
         android:id="@+id/tip"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Wagyu" />
+
     <TextView
         android:id="@+id/tax"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Wagyu" />
+
     <Button
         android:id="@+id/button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Click here" />
+    <Button
+        android:id="@+id/person_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Select # of People" />
+    <LinearLayout
+        android:id="@+id/people_layout"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"/>
 
 </LinearLayout>

@@ -7,15 +7,15 @@ class BillViewModel : ViewModel() {
     private val _billLiveData = MutableLiveData<Bill>()
     val billLiveData: LiveData<Bill> = _billLiveData
     val dishes = listOf(
-        Dish("Diamond Wagyu Set", 392.00, 4),
-        Dish("Wagyu Nigiri", 0.00, 4, true)
+        Dish("Diamond Wagyu Set", 392.00, 4, false, 1),
+        Dish("Wagyu Nigiri", 0.00, 4, true, 2)
     )
     val bill = Bill(name = "Wagyu1", subtotal = 392.00, tax = 37.75, total = 500.31, dishes =  dishes)
 
 
     val dishes2 = listOf(
-        Dish("Dummy Wagyu Set", 392.00, 4, true),
-        Dish("Alt Wagyu Nigiri", 300.00, 4)
+        Dish("Dummy Wagyu Set", 392.00, 4, true, 3),
+        Dish("Alt Wagyu Nigiri", 300.00, 4, false, 4)
     )
     val bill2 = Bill(name = "DummyData", subtotal = 853.00, tax = 37.75, total = 1200.31, dishes =  dishes2)
 
