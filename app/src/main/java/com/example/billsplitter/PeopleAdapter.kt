@@ -2,13 +2,19 @@ package com.example.billsplitter
 
 import android.view.LayoutInflater
 import android.view.View
+import android.view.View.OnClickListener
 import android.view.ViewGroup
 import android.widget.TextView
+import androidx.fragment.app.FragmentManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.billsplitter.ItemAdapter.ViewHolder
 
-class PeopleAdapter: RecyclerView.Adapter<PeopleAdapter.ViewHolder>() {
+class PeopleAdapter(private val fragManager: FragmentManager): RecyclerView.Adapter<PeopleAdapter.ViewHolder>() {
     private val peopleList = mutableListOf<Person>()
+    private val peopleClickListener = OnClickListener { view ->
+        val position = view.getTag()
+        ItemSelectorBottomSheetFragment().show(fragManager, ItemSelectorBottomSheetFragment.TAG)
+    }
 
     fun setList(newList: List<Person>) {
         peopleList.clear()
@@ -30,8 +36,9 @@ class PeopleAdapter: RecyclerView.Adapter<PeopleAdapter.ViewHolder>() {
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         holder.nameTextView.setText(peopleList[position].name)
+        holder.nameTextView.setTag(position)
+        holder.nameTextView.setOnClickListener(peopleClickListener)
     }
 
     override fun getItemCount() = peopleList.size
-
 }

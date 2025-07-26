@@ -18,7 +18,7 @@ class MainActivity : AppCompatActivity() {
     private var textView: TextView? = null
     private val billViewModel: BillViewModel by viewModels()
     private lateinit var peopleRecycler: RecyclerView
-    private val personAdapter = PeopleAdapter()
+    private lateinit var personAdapter: PeopleAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -28,7 +28,7 @@ class MainActivity : AppCompatActivity() {
         val tax: TextView = requireViewById<TextView>(R.id.tax)
         peopleRecycler = requireViewById<RecyclerView>(R.id.people_layout)
 
-
+        personAdapter = PeopleAdapter(this.supportFragmentManager)
         peopleRecycler.layoutManager = LinearLayoutManager(this)
         peopleRecycler.adapter = personAdapter
 
@@ -91,5 +91,9 @@ class MainActivity : AppCompatActivity() {
         val dialog: AlertDialog = builder.create()
         dialog.show()
     }
+
+
+
+
 
 }
