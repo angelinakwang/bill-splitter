@@ -4,6 +4,9 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.MutableLiveData
 
 class BillViewModel : ViewModel() {
+    private val _peopleLiveData = MutableLiveData<List<Person>>()
+    val peopleLiveData: LiveData<List<Person>> = _peopleLiveData
+
     private val _billLiveData = MutableLiveData<Bill>()
     val billLiveData: LiveData<Bill> = _billLiveData
     val dishes = listOf(
@@ -18,7 +21,9 @@ class BillViewModel : ViewModel() {
         Dish("Alt Wagyu Nigiri", 300.00, 4, false, 4)
     )
     val bill2 = Bill(name = "DummyData", subtotal = 853.00, tax = 37.75, total = 1200.31, dishes =  dishes2)
-
+    fun setPersonData(people : List<Person>) {
+        _peopleLiveData.value = people
+    }
     fun getBillData() {
         _billLiveData.value = bill
     }

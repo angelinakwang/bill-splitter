@@ -38,10 +38,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Select # of People" />
-    <LinearLayout
+    <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/people_layout"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"/>
-
+        android:layout_height="match_parent" />
 </LinearLayout>

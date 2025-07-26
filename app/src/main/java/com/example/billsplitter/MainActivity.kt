@@ -11,12 +11,14 @@ import androidx.activity.viewModels
 import androidx.appcompat.app.AlertDialog
 import androidx.lifecycle.Observer
 import androidx.core.view.ViewCompat.requireViewById
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 
 class MainActivity : AppCompatActivity() {
     private var textView: TextView? = null
     private val billViewModel: BillViewModel by viewModels()
-    private var selectedPeopleCount: Int = 0
-    private lateinit var peopleLayout: LinearLayout
+    private lateinit var peopleRecycler: RecyclerView
+    private val personAdapter = PeopleAdapter()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -24,7 +26,13 @@ class MainActivity : AppCompatActivity() {
         val secondLine: TextView = requireViewById<TextView>(R.id.text)
         val tip: TextView = requireViewById<TextView>(R.id.tip)
         val tax: TextView = requireViewById<TextView>(R.id.tax)
-        peopleLayout = requireViewById<LinearLayout>(R.id.people_layout)
+        peopleRecycler = requireViewById<RecyclerView>(R.id.people_layout)
+
+
+        peopleRecycler.layoutManager = LinearLayoutManager(this)
+        peopleRecycler.adapter = personAdapter
+
+
 
         textView = requireViewById<TextView>(R.id.text_view)
         textView?.setText("name")
@@ -54,6 +62,11 @@ class MainActivity : AppCompatActivity() {
 
         }
 
+        val peopleObserver = Observer<List<Person>> { person ->
+            personAdapter.setList(person)
+        }
+        billViewModel.peopleLiveData.observe(this, peopleObserver)
+
         billViewModel.billLiveData.observe(this, billObserver)
 
     }
@@ -67,24 +80,16 @@ class MainActivity : AppCompatActivity() {
             .setTitle("People Selection")
             .setPositiveButton("Done") {_, _ ->
                 val userNumber = input.text.toString()
-                val numberPeople = userNumber.toIntOrNull()
-                selectedPeopleCount = numberPeople ?: 0
-                showPeople(selectedPeopleCount)
+                val numberPeople = userNumber.toIntOrNull() ?: 0
+                val people = (1..numberPeople).map {
+                    Person("Person $it")
+                }
+                billViewModel.setPersonData(people)
             }
             .setNegativeButton("Cancel", null)
 
         val dialog: AlertDialog = builder.create()
         dialog.show()
-    }
-
-    private fun showPeople(number: Int) {
-        peopleLayout.removeAllViews()
-        for ( i in 1..number) {
-            val button = Button(this).apply {
-                text = "Person $i"
-            }
-            peopleLayout.addView(button)
-        }
     }
 
 }
