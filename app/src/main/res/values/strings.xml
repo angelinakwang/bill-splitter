@@ -1,4 +1,7 @@
 <resources>
     <string name="app_name">Bill Splitter</string>
     <string name="name">Bill</string>
+    <string name="save_button">Save</string>
+    <string name="cancel_button">Cancel</string>
+
 </resources>

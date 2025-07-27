@@ -19,6 +19,7 @@ class PeopleAdapter(private val fragManager: FragmentManager): RecyclerView.Adap
             putInt(ItemSelectorBottomSheetFragment.PERSON_ID_KEY, peopleList[position].hashCode())
         }
         val fragment = ItemSelectorBottomSheetFragment()
+        fragment.isCancelable = false
         fragment.arguments = bundle
         fragment.show(fragManager, ItemSelectorBottomSheetFragment.TAG)
     }

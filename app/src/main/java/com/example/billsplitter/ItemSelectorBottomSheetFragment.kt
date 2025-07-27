@@ -25,6 +25,7 @@ class ItemSelectorBottomSheetFragment : BottomSheetDialogFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
         var data : Int = -1
         if (arguments != null) {
             data = requireArguments().getInt(ItemSelectorBottomSheetFragment.PERSON_ID_KEY)
