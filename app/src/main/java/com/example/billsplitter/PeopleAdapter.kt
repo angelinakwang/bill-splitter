@@ -1,5 +1,6 @@
 package com.example.billsplitter
 
+import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.View.OnClickListener
@@ -12,8 +13,14 @@ import com.example.billsplitter.ItemAdapter.ViewHolder
 class PeopleAdapter(private val fragManager: FragmentManager): RecyclerView.Adapter<PeopleAdapter.ViewHolder>() {
     private val peopleList = mutableListOf<Person>()
     private val peopleClickListener = OnClickListener { view ->
-        val position = view.getTag()
-        ItemSelectorBottomSheetFragment().show(fragManager, ItemSelectorBottomSheetFragment.TAG)
+        val position = view.getTag() as Int
+
+        val bundle = Bundle().apply {
+            putInt(ItemSelectorBottomSheetFragment.PERSON_ID_KEY, peopleList[position].hashCode())
+        }
+        val fragment = ItemSelectorBottomSheetFragment()
+        fragment.arguments = bundle
+        fragment.show(fragManager, ItemSelectorBottomSheetFragment.TAG)
     }
 
     fun setList(newList: List<Person>) {

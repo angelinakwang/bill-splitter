@@ -24,6 +24,12 @@ class ItemSelectorBottomSheetFragment : BottomSheetDialogFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        var data : Int = -1
+        if (arguments != null) {
+            data = requireArguments().getInt(ItemSelectorBottomSheetFragment.PERSON_ID_KEY)
+        }
+        val person = billViewModel.peopleLiveData.value!!.getValue(data)
+
         val dishAdapter = ItemAdapter({ dishes ->
             if (billViewModel.billLiveData.value?.name == "Wagyu1") {
                 billViewModel.updateBillDishes(dishes)
@@ -50,5 +56,6 @@ class ItemSelectorBottomSheetFragment : BottomSheetDialogFragment() {
     }
     companion object {
         const val TAG = "ItemSelector"
+        const val PERSON_ID_KEY = "PERSON_ID_KEY"
     }
 }

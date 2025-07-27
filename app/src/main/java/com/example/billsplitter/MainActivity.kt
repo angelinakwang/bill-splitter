@@ -28,6 +28,8 @@ class MainActivity : AppCompatActivity() {
         val tax: TextView = requireViewById<TextView>(R.id.tax)
         peopleRecycler = requireViewById<RecyclerView>(R.id.people_layout)
 
+
+
         personAdapter = PeopleAdapter(this.supportFragmentManager)
         peopleRecycler.layoutManager = LinearLayoutManager(this)
         peopleRecycler.adapter = personAdapter
@@ -62,8 +64,9 @@ class MainActivity : AppCompatActivity() {
 
         }
 
-        val peopleObserver = Observer<List<Person>> { person ->
-            personAdapter.setList(person)
+        val peopleObserver = Observer<Map<Int, Person>> { personMap ->
+            val personList = personMap.values.toList()
+            personAdapter.setList(personList)
         }
         billViewModel.peopleLiveData.observe(this, peopleObserver)
 
@@ -81,8 +84,9 @@ class MainActivity : AppCompatActivity() {
             .setPositiveButton("Done") {_, _ ->
                 val userNumber = input.text.toString()
                 val numberPeople = userNumber.toIntOrNull() ?: 0
-                val people = (1..numberPeople).map {
-                    Person("Person $it")
+                val people = (1..numberPeople).associate {
+                    val person = Person("Person $it")
+                    person.hashCode() to person
                 }
                 billViewModel.setPersonData(people)
             }
