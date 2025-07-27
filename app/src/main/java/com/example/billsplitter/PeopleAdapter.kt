@@ -16,7 +16,7 @@ class PeopleAdapter(private val fragManager: FragmentManager): RecyclerView.Adap
         val position = view.getTag() as Int
 
         val bundle = Bundle().apply {
-            putInt(ItemSelectorBottomSheetFragment.PERSON_ID_KEY, peopleList[position].hashCode())
+            putInt(ItemSelectorBottomSheetFragment.PERSON_ID_KEY, peopleList[position].id)
         }
         val fragment = ItemSelectorBottomSheetFragment()
         fragment.isCancelable = false
@@ -29,6 +29,7 @@ class PeopleAdapter(private val fragManager: FragmentManager): RecyclerView.Adap
         peopleList.addAll(newList)
         notifyDataSetChanged()
     }
+
     class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         val nameTextView: TextView
 

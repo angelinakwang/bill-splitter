@@ -31,14 +31,8 @@ class ItemSelectorBottomSheetFragment : BottomSheetDialogFragment() {
             data = requireArguments().getInt(ItemSelectorBottomSheetFragment.PERSON_ID_KEY)
         }
         val person = billViewModel.peopleLiveData.value!!.getValue(data)
-
-        val dishAdapter = ItemAdapter({ dishes ->
-            if (billViewModel.billLiveData.value?.name == "Wagyu1") {
-                billViewModel.updateBillDishes(dishes)
-            } else {
-                billViewModel.updateAltBillDishes(dishes)
-            }
-        })
+        val dishAdapter = ItemAdapter(person.dishes)
+        val copyDishMap = person.dishes.toMutableMap()
         val itemRecycler : RecyclerView = view.findViewById(R.id.itemRecycler)
         itemRecycler.layoutManager = LinearLayoutManager(context)
         itemRecycler.adapter = dishAdapter
@@ -57,13 +51,13 @@ class ItemSelectorBottomSheetFragment : BottomSheetDialogFragment() {
         }
         view.findViewById<Button>(R.id.saveButton).apply {
             setOnClickListener {
-                billViewModel.setPerson(person)
                 dismiss()
             }
         }
 
         view.findViewById<Button>(R.id.cancelButton).apply {
             setOnClickListener {
+                person.dishes = copyDishMap
                 dismiss()
             }
         }

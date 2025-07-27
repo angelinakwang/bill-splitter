@@ -85,8 +85,8 @@ class MainActivity : AppCompatActivity() {
                 val userNumber = input.text.toString()
                 val numberPeople = userNumber.toIntOrNull() ?: 0
                 val people = (1..numberPeople).associate {
-                    val person = Person("Person $it")
-                    person.hashCode() to person
+                    val person = Person(id = it, "Person $it")
+                    person.id to person
                 }.toMutableMap()
                 billViewModel.setPersonData(people)
             }
