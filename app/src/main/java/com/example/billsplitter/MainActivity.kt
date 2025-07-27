@@ -87,7 +87,7 @@ class MainActivity : AppCompatActivity() {
                 val people = (1..numberPeople).associate {
                     val person = Person("Person $it")
                     person.hashCode() to person
-                }
+                }.toMutableMap()
                 billViewModel.setPersonData(people)
             }
             .setNegativeButton("Cancel", null)
