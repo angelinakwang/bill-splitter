@@ -10,10 +10,10 @@ class BillViewModel : ViewModel() {
     private val _billLiveData = MutableLiveData<Bill>()
     val billLiveData: LiveData<Bill> = _billLiveData
     val dishes = listOf(
-        Dish("Diamond Wagyu Set", 392.00, 4),
-        Dish("Wagyu Nigiri", 0.00, 4),
+        Dish("Diamond Wagyu Set", 7.50, 2),
+        Dish("Wagyu Nigiri", 12.00, 1),
     )
-    val bill = Bill(name = "Wagyu1", subtotal = 392.00, tax = 37.75, total = 500.31, dishes =  dishes)
+    val bill = Bill(name = "Wagyu1", subtotal = 27.00, tax = 2.23, total = 29.23, dishes =  dishes)
 
 
     val dishes2 = listOf(

@@ -25,19 +25,38 @@ class ItemSelectorBottomSheetFragment : BottomSheetDialogFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
+        val totalCostTextView: TextView = view.findViewById<TextView>(R.id.total_cost)
         var data : Int = -1
         if (arguments != null) {
             data = requireArguments().getInt(ItemSelectorBottomSheetFragment.PERSON_ID_KEY)
         }
         val person = billViewModel.peopleLiveData.value!!.getValue(data)
-        val dishAdapter = ItemAdapter(person.dishes)
+        val dishAdapter = ItemAdapter(person.dishes) {
+            val bill = billViewModel.billLiveData.value
+            var subtotal = 0.00
+            if (bill != null) {
+                val tipPercentage = bill.getTipPercentage()
+                val taxPercentage = bill.getTaxPercentage()
+                for ((key, value) in person.dishes) {
+                    subtotal += key.price * value
+                }
+                val total = subtotal * (1 + (tipPercentage + taxPercentage))
+                val roundedTotal = String.format("%.2f", total)
+                totalCostTextView.text = roundedTotal
+            }
+
+
+        }
         val copyDishMap = person.dishes.toMutableMap()
         val itemRecycler : RecyclerView = view.findViewById(R.id.itemRecycler)
         itemRecycler.layoutManager = LinearLayoutManager(context)
         itemRecycler.adapter = dishAdapter
         val billNameTextView: TextView = view.requireViewById<TextView>(R.id.bill_name_text_view)
 
+
+        fun updateTotalCost() {
+
+        }
         val billObserver = Observer<Bill> { bill ->
             dishAdapter.setList(bill.dishes)
         }
@@ -61,6 +80,7 @@ class ItemSelectorBottomSheetFragment : BottomSheetDialogFragment() {
                 dismiss()
             }
         }
+
     }
     companion object {
         const val TAG = "ItemSelector"

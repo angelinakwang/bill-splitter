@@ -11,7 +11,7 @@ import android.widget.TextView
 import androidx.core.widget.addTextChangedListener
 import androidx.recyclerview.widget.RecyclerView
 
-class ItemAdapter(personDishMap: MutableMap<Dish, Int>) : RecyclerView.Adapter<ItemAdapter.ViewHolder>() {
+class ItemAdapter(personDishMap: MutableMap<Dish, Int>, private val quantityChanged : () -> Unit) : RecyclerView.Adapter<ItemAdapter.ViewHolder>() {
     private val itemList = mutableListOf<Dish>()
     private val dishQuantityMap = personDishMap
     fun setList(newList: List<Dish>) {
@@ -52,6 +52,7 @@ class ItemAdapter(personDishMap: MutableMap<Dish, Int>) : RecyclerView.Adapter<I
 
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
                 dishQuantityMap[itemList[position]] = s.toString().toIntOrNull() ?: 0
+                quantityChanged()
             }
         })
         holder.nameTextView.setText(itemList[position].name)

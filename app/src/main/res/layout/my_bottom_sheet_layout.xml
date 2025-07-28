@@ -22,7 +22,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/save_button"
-        app:layout_constraintTop_toBottomOf="@id/itemRecycler"
+        app:layout_constraintTop_toBottomOf="@id/total_cost"
         app:layout_constraintStart_toStartOf="@id/itemRecycler"/>
     <Button
         android:id="@+id/cancelButton"
@@ -31,4 +31,10 @@
         android:text="@string/cancel_button"
         app:layout_constraintTop_toTopOf="@+id/saveButton"
         app:layout_constraintStart_toEndOf="@id/saveButton"/>
+    <TextView
+        android:id="@+id/total_cost"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Total Cost"
+        app:layout_constraintTop_toBottomOf="@id/itemRecycler"/>
 </androidx.constraintlayout.widget.ConstraintLayout>
