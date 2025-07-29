@@ -58,6 +58,15 @@ class ItemSelectorBottomSheetFragment : BottomSheetDialogFragment() {
 
         }
         val billObserver = Observer<Bill> { bill ->
+            var subtotal = 0.00
+                val tipPercentage = bill.getTipPercentage()
+                val taxPercentage = bill.getTaxPercentage()
+                for ((key, value) in person.dishes) {
+                    subtotal += key.price * value
+                }
+                val total = subtotal * (1 + (tipPercentage + taxPercentage))
+                val roundedTotal = String.format("%.2f", total)
+                totalCostTextView.text = roundedTotal
             dishAdapter.setList(bill.dishes)
         }
         billViewModel.billLiveData.observe(this, billObserver)

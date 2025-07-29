@@ -1,11 +1,17 @@
 package com.example.billsplitter
 
+import android.app.Activity
+import android.content.ActivityNotFoundException
+import android.content.Intent
+import android.graphics.Bitmap
 import android.os.Bundle
+import android.provider.MediaStore
 import android.text.InputType
 import android.widget.Button
 import android.widget.EditText
 import android.widget.LinearLayout
 import android.widget.TextView
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.activity.viewModels
 import androidx.appcompat.app.AlertDialog
@@ -15,10 +21,21 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 
 class MainActivity : AppCompatActivity() {
-    private var textView: TextView? = null
     private val billViewModel: BillViewModel by viewModels()
+    private val resultLauncher =
+        registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
+            if (result.resultCode == Activity.RESULT_OK) {
+                if (result?.data != null) {
+                    val bitmap = result.data?.extras?.get("data") as Bitmap
+                    android.util.Log.d("Angelina", "$bitmap")
+                }
+            }
+        }
+    private var textView: TextView? = null
+
     private lateinit var peopleRecycler: RecyclerView
     private lateinit var personAdapter: PeopleAdapter
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -39,10 +56,12 @@ class MainActivity : AppCompatActivity() {
         textView = requireViewById<TextView>(R.id.text_view)
         textView?.setText("name")
 
-        val button : Button = requireViewById(R.id.button)
+
+        val button : Button = requireViewById(R.id.camera_button)
         button.setOnClickListener {
-            val modalBottomSheet = ItemSelectorBottomSheetFragment()
-            modalBottomSheet.show(supportFragmentManager, ItemSelectorBottomSheetFragment.TAG)
+            val takePictureIntent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
+
+            resultLauncher.launch(takePictureIntent)
         }
 
         val selectPersonButton : Button = requireViewById(R.id.person_button)
@@ -96,6 +115,9 @@ class MainActivity : AppCompatActivity() {
         dialog.show()
     }
 
+    companion object {
+        const val REQUEST_IMAGE_CAPTURE = 1
+    }
 
 
 
