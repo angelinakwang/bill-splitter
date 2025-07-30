@@ -19,6 +19,9 @@ import androidx.lifecycle.Observer
 import androidx.core.view.ViewCompat.requireViewById
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.google.mlkit.vision.common.InputImage
+import com.google.mlkit.vision.text.TextRecognition
+import com.google.mlkit.vision.text.latin.TextRecognizerOptions
 
 class MainActivity : AppCompatActivity() {
     private val billViewModel: BillViewModel by viewModels()
@@ -28,6 +31,14 @@ class MainActivity : AppCompatActivity() {
                 if (result?.data != null) {
                     val bitmap = result.data?.extras?.get("data") as Bitmap
                     android.util.Log.d("Angelina", "$bitmap")
+                    val image = InputImage.fromBitmap(bitmap, 0)
+                    val recognizer = TextRecognition.getClient(TextRecognizerOptions.DEFAULT_OPTIONS)
+                    recognizer.process(image).addOnSuccessListener { visionText ->
+                        val resultText = visionText.text
+                        for(block in visionText.textBlocks) {
+                            android.util.Log.d("Angelina", "TextblockText ${block.text}")
+                        }
+                    }
                 }
             }
         }
@@ -47,7 +58,7 @@ class MainActivity : AppCompatActivity() {
 
 
 
-        personAdapter = PeopleAdapter(this.supportFragmentManager)
+        personAdapter = PeopleAdapter(this.supportFragmentManager, ::addPerson)
         peopleRecycler.layoutManager = LinearLayoutManager(this)
         peopleRecycler.adapter = personAdapter
 
@@ -103,20 +114,24 @@ class MainActivity : AppCompatActivity() {
             .setPositiveButton("Done") {_, _ ->
                 val userNumber = input.text.toString()
                 val numberPeople = userNumber.toIntOrNull() ?: 0
-                val people = (1..numberPeople).associate {
-                    val person = Person(id = it, "Person $it")
-                    person.id to person
-                }.toMutableMap()
-                billViewModel.setPersonData(people)
+                billViewModel.clearPersonData()
+                (1..numberPeople).forEach {
+                    billViewModel.addPersonData(it)
+                }
             }
             .setNegativeButton("Cancel", null)
 
         val dialog: AlertDialog = builder.create()
         dialog.show()
     }
+    fun addPerson(position: Int) {
+        billViewModel.addPersonData(position)
+        android.util.Log.d("Angelina", "position $position")
+    }
 
     companion object {
         const val REQUEST_IMAGE_CAPTURE = 1
+
     }
 
 

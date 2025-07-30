@@ -4,7 +4,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.MutableLiveData
 
 class BillViewModel : ViewModel() {
-    private val _peopleLiveData = MutableLiveData<MutableMap<Int, Person>>()
+    private val _peopleLiveData = MutableLiveData<MutableMap<Int, Person>>(mutableMapOf())
     val peopleLiveData: LiveData<MutableMap<Int, Person>> = _peopleLiveData
 
     private val _billLiveData = MutableLiveData<Bill>()
@@ -22,8 +22,14 @@ class BillViewModel : ViewModel() {
     )
     val bill2 = Bill(name = "DummyData", subtotal = 853.00, tax = 37.75, total = 1200.31, dishes =  dishes2)
 
-    fun setPersonData(people : MutableMap<Int, Person>) {
-        _peopleLiveData.value = people
+    fun clearPersonData() {
+        _peopleLiveData.value?.clear()
+        _peopleLiveData.value = _peopleLiveData.value
+    }
+    fun addPersonData(position: Int) {
+        val person = Person(id = position, "Person $position")
+        _peopleLiveData.value?.put(person.id, person)
+        _peopleLiveData.value = _peopleLiveData.value
     }
     fun getBillData() {
         _billLiveData.value = bill
